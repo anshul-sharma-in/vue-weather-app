@@ -1,10 +1,17 @@
 <template>
-  <div id="app" :class="typeof weather.main != 'undefined' && weather.main.temp > 16 ? 'warm' : 'cold'" >
+  <div
+    id="app"
+    :class="
+      typeof weather.main != 'undefined' && weather.main.temp > 16
+        ? 'warm'
+        : 'cold'
+    "
+  >
     <main>
       <div class="search-box">
-        <input 
-          type="text"  
-          class="search-bar" 
+        <input
+          type="text"
+          class="search-bar"
           placeholder="Search..."
           v-model="query"
           @keypress="fetchWeather"
@@ -13,47 +20,72 @@
 
       <div class="weather-wrap" v-if="typeof weather.main != 'undefined'">
         <div class="location-box">
-          <div class="location"> {{ weather.name }}, {{ weather.sys.country }} </div>
-          <div class="date"> {{ generateDate() }} </div>
+          <div class="location">
+            {{ weather.name }}, {{ weather.sys.country }}
+          </div>
+          <div class="date">{{ generateDate() }}</div>
         </div>
 
         <div class="weather-box">
-          <div class="temp"> {{ Math.round(weather.main.temp) }}°C</div>
-          <div class="weather"> {{ weather.weather[0].main }} </div>
-      </div>
+          <div class="temp">{{ Math.round(weather.main.temp) }}°C</div>
+          <div class="weather">{{ weather.weather[0].main }}</div>
+        </div>
       </div>
     </main>
   </div>
 </template>
 
 <script>
-
 export default {
-  name: 'App',
+  name: "App",
   data() {
     return {
-      api_key: '569c6f95bff21a12edefbaa1d7fbfe08',
-      url_base: 'https://api.openweathermap.org/data/2.5/',
-      query: '',
-      weather: {}
-    }
+      api_key: "569c6f95bff21a12edefbaa1d7fbfe08",
+      url_base: "https://api.openweathermap.org/data/2.5/",
+      query: "",
+      weather: {},
+    };
   },
   methods: {
-    fetchWeather (e) {
+    fetchWeather(e) {
       if (e.key == "Enter") {
-        fetch(`${this.url_base}weather?q=${this.query}&units=metric&APPID=${this.api_key}`)
-          .then(resp => {
+        fetch(
+          `${this.url_base}weather?q=${this.query}&units=metric&APPID=${this.api_key}`
+        )
+          .then((resp) => {
             return resp.json();
-          }).then(this.setResults);
+          })
+          .then(this.setResults);
       }
     },
-    setResults (results) {
+    setResults(results) {
       this.weather = results;
     },
-    generateDate () {
+    generateDate() {
       let d = new Date();
-      let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-      let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      let months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+      let days = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ];
 
       let day = days[d.getDay()];
       let date = d.getDate();
@@ -61,9 +93,9 @@ export default {
       let year = d.getFullYear();
 
       return `${day} ${date} ${month} ${year}`;
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style>
@@ -74,25 +106,29 @@ export default {
 }
 
 body {
-  font-family: 'montserrat', sans-serif;
+  font-family: "montserrat", sans-serif;
 }
 
 #app {
-  background-image: url('./assets/cold.jpg');
+  background-image: url("./assets/cold.jpg");
   background-size: cover;
   background-position: bottom;
   transition: 0.4s;
 }
 
 #app.warm {
-  background-image: url('./assets/warm.jpg');
+  background-image: url("./assets/warm.jpg");
 }
 
 main {
   min-height: 100vh;
   padding: 25px;
 
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.75));
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.25),
+    rgba(0, 0, 0, 0.75)
+  );
 }
 
 .search-box {
@@ -134,7 +170,7 @@ main {
 }
 
 .location-box .date {
-  color: #A9A9A9;
+  color: #a9a9a9;
   font-size: 20px;
   font-weight: 300;
   font-style: italic;
@@ -161,7 +197,7 @@ main {
 }
 
 .weather-box .weather {
-  color: #FFF;
+  color: #fff;
   font-size: 48px;
   font-weight: 700;
   font-style: italic;
